@@ -1,0 +1,46 @@
+/* Estilos básicos para el dashboard */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+  }
+  .container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 50px auto; /* Centrar el contenedor */
+  }
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  .logout-link {
+    margin-top: 20px; /* Espacio superior */
+    display: inline-block; /* Para poder aplicar padding y margin vertical */
+    padding: 10px 20px;
+    background-color: #dc3545; /* Rojo para el botón de logout */
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease; /* Transición suave para el hover */
+  }
+  .logout-link:hover {
+    background-color: #c82333; /* Rojo más oscuro al pasar el ratón */
+    text-decoration: none; /* Asegura que no haya subrayado en hover */
+  }

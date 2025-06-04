@@ -1,0 +1,16 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Dashboard - artesanos.com
+    link(rel="stylesheet", href="/css/dashboard.css")
+    // ✨ CORRECCIÓN AQUÍ: El bloque style. NO debe estar indentado bajo link
+  body
+    .container
+      h1 ¡Bienvenido a tu Dashboard, #{nombreUsuario}!
+      p Has iniciado sesión exitosamente con el correo: #{emailUsuario}.
+      p Esta es una página protegida por JWT.
+      
+      // Enlace para cerrar sesión
+      a(href="/logout", class="logout-link") Cerrar Sesión

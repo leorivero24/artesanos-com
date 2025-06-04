@@ -1,0 +1,129 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Restablecer Contraseña - artesanos.com
+    // REMOVIDO: link(rel="stylesheet", href="/css/login.css")
+    link(href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap", rel="stylesheet")
+    // Este es el único enlace a tus estilos CSS de aplicación
+    link(rel="stylesheet", href="/css/restablecer.css")
+    
+  body
+    .reset-password-container
+      h1 Restablecer Contraseña
+      p Ingresa tu nueva contraseña.
+
+      form#restablecerContrasenaForm(action="/restablecer-contrasena", method="POST")
+        // El token se envía de forma oculta en el formulario
+        input(type="hidden", id="token", name="token", value=token)
+
+        input(type="password", id="nuevaContrasena", name="nuevaContrasena", placeholder="Nueva Contraseña", required)
+        p.error-message#nuevaContrasenaError
+
+        input(type="password", id="confirmarContrasena", name="confirmarContrasena", placeholder="Confirmar Contraseña", required)
+        p.error-message#confirmarContrasenaError
+
+        button(type="submit") Restablecer Contraseña
+
+        p#mensaje(style="display: none;")
+
+      p.back-to-login
+        a(href="/login") Volver al Login
+
+    // El script JavaScript permanece en el Pug
+    script.
+      const restablecerContrasenaForm = document.getElementById('restablecerContrasenaForm');
+      const nuevaContrasenaInput = document.getElementById('nuevaContrasena');
+      const confirmarContrasenaInput = document.getElementById('confirmarContrasena');
+      const tokenInput = document.getElementById('token'); // Recupera el token del input oculto
+      const nuevaContrasenaError = document.getElementById('nuevaContrasenaError');
+      const confirmarContrasenaError = document.getElementById('confirmarContrasenaError');
+      const mensajeElement = document.getElementById('mensaje');
+
+      // Función para obtener el token de la URL si no está en el input oculto (ej. si se refresca la página)
+      function getParameterByName(name, url = window.location.href) {
+          name = name.replace(/[\[\]]/g, '\\$&');
+          var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+              results = regex.exec(url);
+          if (!results) return null;
+          if (!results[2]) return '';
+          return decodeURIComponent(results[2].replace(/\+/g, ' '));
+      }
+
+      // Asegurarse de que el input oculto tenga el token de la URL
+      if (!tokenInput.value) {
+          tokenInput.value = getParameterByName('token');
+      }
+
+      restablecerContrasenaForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        // Limpiar mensajes anteriores
+        nuevaContrasenaError.textContent = '';
+        confirmarContrasenaError.textContent = '';
+        mensajeElement.style.display = 'none';
+        mensajeElement.textContent = '';
+
+        const nuevaContrasena = nuevaContrasenaInput.value;
+        const confirmarContrasena = confirmarContrasenaInput.value;
+        const token = tokenInput.value;
+
+        let valid = true;
+
+        if (nuevaContrasena.length < 6) {
+          nuevaContrasenaError.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+          valid = false;
+        }
+        if (nuevaContrasena !== confirmarContrasena) {
+          confirmarContrasenaError.textContent = 'Las contraseñas no coinciden.';
+          valid = false;
+        }
+
+        if (!valid) {
+          mensajeElement.style.display = 'none'; // No mostrar el mensaje principal si hay errores de validación de campos
+          return;
+        }
+        
+        // Si no hay token en el input oculto o en la URL, es un error
+        if (!token) {
+            mensajeElement.textContent = 'Token de restablecimiento no encontrado. Por favor, vuelve a solicitar un enlace.';
+            mensajeElement.style.color = 'red';
+            mensajeElement.style.display = 'block';
+            return;
+        }
+
+        try {
+          const response = await fetch('/restablecer-contrasena', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token, nuevaContrasena })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            mensajeElement.textContent = data.mensaje || 'Tu contraseña ha sido restablecida exitosamente. Redirigiendo al login...';
+            mensajeElement.style.color = 'green';
+            mensajeElement.style.display = 'block';
+
+            // Redirigir al login después de un breve retraso
+            setTimeout(() => {
+              window.location.href = '/login';
+            }, 3000); // Redirige en 3 segundos
+
+          } else {
+            mensajeElement.textContent = data.mensaje || 'Hubo un error al restablecer tu contraseña. El token podría ser inválido o haber expirado.';
+            mensajeElement.style.color = 'red';
+            mensajeElement.style.display = 'block';
+          }
+
+        } catch (error) {
+          console.error('Error en la solicitud de restablecimiento:', error);
+          mensajeElement.textContent = 'Error de conexión. Inténtalo de nuevo más tarde.';
+          mensajeElement.style.color = 'red';
+          mensajeElement.style.display = 'block';
+        }
+      });

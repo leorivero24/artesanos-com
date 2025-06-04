@@ -1,0 +1,82 @@
+/* Estilos generales del contenedor para Restablecer Contraseña y Olvidar Contraseña */
+.reset-password-container,
+.reset-container { /* Añadimos .reset-container aquí para unificar estilos si quieres */
+  max-width: 450px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.reset-password-container h1,
+.reset-container h1 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.reset-password-container p,
+.reset-container p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* Estilos para los inputs (aplicable a ambos formularios) */
+.reset-password-container input[type="password"],
+.reset-container input[type="email"] { /* Añadimos el input de email del formulario de olvidar */
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Estilos del botón (azul para restablecer, verde para olvidar) */
+.reset-password-container button {
+  background-color: #007bff; /* Un azul para el botón de restablecer */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.reset-password-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Puedes añadir este estilo para el botón del formulario de "olvidar-contrasena" si quieres que sea verde como antes */
+.reset-container form#solicitarRestablecimientoForm button {
+  background-color: #4CAF50; /* Color verde */
+}
+.reset-container form#solicitarRestablecimientoForm button:hover {
+  background-color: #45a049;
+}
+
+
+/* Mensajes de error/éxito */
+#mensaje {
+  margin-top: 15px;
+  font-weight: bold;
+}
+.error-message {
+  color: red;
+  font-size: 0.9em;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  text-align: left;
+  padding-left: 10px;
+}
+.success-message {
+  color: green;
+  font-size: 0.9em;
+  margin-top: 10px;
+  text-align: center;
+}
+.back-to-login {
+  margin-top: 20px;
+  display: block;
+}
