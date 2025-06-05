@@ -84,6 +84,20 @@
     transform: translateY(-2px);
   }
 
+
+  .forgot-password-link {
+    margin-top: 20px;
+    text-decoration: none; /* Elimina el subrayado */
+    color: #8B4513;       /* Color marrón */
+    text-align: center;   /* Si quieres que este enlace esté centrado, asegúrate de que el contenedor o este mismo tenga esta propiedad */
+    display: block;       /* Podría ser necesario si quieres que text-align: center funcione bien en el enlace mismo */
+}
+
+/* Opcional: Estilo al pasar el ratón por encima (hover) */
+.forgot-password-link:hover {
+    color: #A0522D; /* Un tono diferente de marrón al pasar el ratón */
+    text-decoration: underline; /* Puedes volver a subrayar al pasar el ratón si quieres */
+}
  
   
   .footer-text {

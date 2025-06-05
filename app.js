@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser'); // ✨ NUEVO: Importar cookie-par
 
 const app = express();
 
+
 // Configurar motor de vistas Pug
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));

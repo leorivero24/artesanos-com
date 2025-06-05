@@ -1,3 +1,152 @@
+//- doctype html
+//- html(lang="es")
+//-   head
+//-     meta(charset="UTF-8")
+//-     meta(name="viewport" content="width=device-width, initial-scale=1.0")
+//-     title artesanos.com - Iniciar Sesión
+//-     link(rel="stylesheet" href="/css/login.css")
+//-     link(href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet")
+
+//-     style.
+//-       .error-message {
+//-         color: red;
+//-         font-size: 0.85em;
+//-         margin-top: -10px;
+//-         margin-bottom: 5px;
+//-         text-align: left;
+//-         display: none;
+//-       }
+//-       .input-error {
+//-         border-color: red !important;
+//-       }
+//-       #mensaje {
+//-         margin-top: 20px !important;
+//-         font-weight: bold;
+//-         text-align: center;
+//-       }
+
+//-   body
+//-     .login-container
+//-       h1 artesanos.com
+//-       form#loginForm(action="/login" method="POST", novalidate)
+//-         input(type="email" id="email" name="email" placeholder="Correo electrónico")
+//-         p.error-message#emailError
+
+//-         input(type="password" id="contrasena" name="contrasena" placeholder="Contraseña")
+//-         p.error-message#contrasenaError
+
+//-         button(type="submit") Iniciar Sesión
+
+//-         p#mensaje(style=`color: red; display: none;`)
+
+//-       a.forgot-password-link(href="/olvide-contrasena") ¿Olvidaste tu contraseña?
+
+//-       p.footer-text
+//-         | ¿No tienes cuenta?
+//-         a(href="/registro") Regístrate aquí
+
+//-     script.
+//-       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+//-       const loginForm = document.getElementById('loginForm');
+//-       // console.log('Referencia al formulario:', loginForm); // Línea de depuración, puedes eliminarla si ya no la necesitas
+
+//-       const emailInput = document.getElementById('email');
+//-       const contrasenaInput = document.getElementById('contrasena');
+
+//-       const emailError = document.getElementById('emailError');
+//-       const contrasenaError = document.getElementById('contrasenaError');
+
+//-       const mensajeElement = document.getElementById('mensaje');
+
+//-       function showError(element, message) {
+//-         element.textContent = message;
+//-         element.style.display = 'block';
+//-         if (element.previousElementSibling) {
+//-           element.previousElementSibling.classList.add('input-error');
+//-         }
+//-       }
+
+//-       function hideError(element) {
+//-         element.textContent = '';
+//-         element.style.display = 'none';
+//-         if (element.previousElementSibling) {
+//-           element.previousElementSibling.classList.remove('input-error');
+//-         }
+//-       }
+
+//-       if (loginForm) {
+//-         loginForm.addEventListener('submit', async function(event) {
+//-           event.preventDefault();
+
+//-           // console.log('Formulario de login enviado. Intentando hacer fetch...'); // Línea de depuración, puedes eliminarla
+
+//-           hideError(emailError);
+//-           hideError(contrasenaError);
+//-           if (mensajeElement) { 
+//-             mensajeElement.style.display = 'none'; 
+//-             mensajeElement.textContent = '';
+//-           }
+
+//-           let isValid = true;
+
+//-           if (emailInput.value.trim() === '') {
+//-             showError(emailError, 'El correo electrónico es obligatorio.');
+//-             isValid = false;
+//-           } else if (!emailRegex.test(emailInput.value.trim())) {
+//-             showError(emailError, 'Por favor, introduce un correo electrónico válido.');
+//-             isValid = false;
+//-           }
+
+//-           if (contrasenaInput.value.trim() === '') {
+//-             showError(contrasenaError, 'La contraseña es obligatoria.');
+//-             isValid = false;
+//-           }
+
+//-           if (!isValid) {
+//-             return;
+//-           }
+
+//-           try {
+//-             const response = await fetch('/login', {
+//-               method: 'POST',
+//-               headers: {
+//-                 'Content-Type': 'application/json'
+//-               },
+//-               body: JSON.stringify({
+//-                 email: emailInput.value.trim(),
+//-                 contrasena: contrasenaInput.value.trim()
+//-               })
+//-             });
+
+//-             const data = await response.json();
+
+//-             if (response.ok) {
+//-               // Ya no guardamos el token en localStorage porque ahora va en una cookie HTTP-only
+//-               // localStorage.setItem('authToken', data.token); // ELIMINADO
+//-               // localStorage.setItem('currentUser', JSON.stringify(data.usuario)); // ELIMINADO
+
+//-               // console.log('Inicio de sesión exitoso. Token en cookie.'); // Línea de depuración
+//-               // console.log('Datos de usuario:', data.usuario); // Línea de depuración
+
+//-               window.location.href = '/dashboard'; // Redirigir al dashboard
+//-             } else {
+//-               showError(mensajeElement, data.mensaje || 'Error desconocido al iniciar sesión.');
+//-               mensajeElement.style.color = 'red';
+//-             }
+//-           } catch (error) {
+//-             console.error('Error al enviar la solicitud de login:', error);
+//-             showError(mensajeElement, 'Hubo un problema de conexión. Inténtalo de nuevo.');
+//-             mensajeElement.style.color = 'red';
+//-           }
+//-         });
+//-       } else {
+//-         // console.error('Error: No se encontró el elemento con ID "loginForm". El script no se ejecutará.'); // Línea de depuración
+//-       }
+
+
+
+
 doctype html
 html(lang="es")
   head
@@ -39,8 +188,7 @@ html(lang="es")
 
         p#mensaje(style=`color: red; display: none;`)
 
-        p.forgot-password
-        a(style="text-align: center;")(href="/olvide-contrasena") ¿Olvidaste tu contraseña?
+      a.forgot-password-link(href="/olvide-contrasena") ¿Olvidaste tu contraseña?
 
       p.footer-text
         | ¿No tienes cuenta?
@@ -50,14 +198,10 @@ html(lang="es")
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
       const loginForm = document.getElementById('loginForm');
-      // console.log('Referencia al formulario:', loginForm); // Línea de depuración, puedes eliminarla si ya no la necesitas
-
       const emailInput = document.getElementById('email');
       const contrasenaInput = document.getElementById('contrasena');
-
       const emailError = document.getElementById('emailError');
       const contrasenaError = document.getElementById('contrasenaError');
-
       const mensajeElement = document.getElementById('mensaje');
 
       function showError(element, message) {
@@ -80,12 +224,10 @@ html(lang="es")
         loginForm.addEventListener('submit', async function(event) {
           event.preventDefault();
 
-          // console.log('Formulario de login enviado. Intentando hacer fetch...'); // Línea de depuración, puedes eliminarla
-
           hideError(emailError);
           hideError(contrasenaError);
-          if (mensajeElement) { 
-            mensajeElement.style.display = 'none'; 
+          if (mensajeElement) {
+            mensajeElement.style.display = 'none';
             mensajeElement.textContent = '';
           }
 
@@ -120,15 +262,12 @@ html(lang="es")
               })
             });
 
-            const data = await response.json();
+            const data = await response.json(); // Aún parseamos para leer el mensaje o usuario
 
             if (response.ok) {
-              // Ya no guardamos el token en localStorage porque ahora va en una cookie HTTP-only
-              // localStorage.setItem('authToken', data.token); // ELIMINADO
-              // localStorage.setItem('currentUser', JSON.stringify(data.usuario)); // ELIMINADO
-
-              // console.log('Inicio de sesión exitoso. Token en cookie.'); // Línea de depuración
-              // console.log('Datos de usuario:', data.usuario); // Línea de depuración
+              // ✨ CAMBIO CLAVE AQUÍ: No hay necesidad de leer data.token porque se maneja por cookies
+              console.log('Inicio de sesión exitoso. Cookie HTTP-only establecida.');
+              console.log('Datos de usuario (si se enviaron en la respuesta):', data.usuario);
 
               window.location.href = '/dashboard'; // Redirigir al dashboard
             } else {
@@ -142,5 +281,28 @@ html(lang="es")
           }
         });
       } else {
-        // console.error('Error: No se encontró el elemento con ID "loginForm". El script no se ejecutará.'); // Línea de depuración
+        console.error('Error: No se encontró el elemento con ID "loginForm". El script no se ejecutará.');
+      }
+
+      // La función logout también cambia para hacer una petición al servidor
+      async function logout() {
+        try {
+          const response = await fetch('/logout', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          if (response.ok) {
+            console.log('Sesión cerrada desde el servidor.');
+            window.location.href = '/login'; // Redirige al login después de que el servidor borre la cookie
+          } else {
+            const errorData = await response.json();
+            console.error('Error al cerrar sesión:', errorData.mensaje);
+            alert('Hubo un problema al cerrar sesión.');
+          }
+        } catch (error) {
+          console.error('Error de red al intentar cerrar sesión:', error);
+          alert('Error de conexión al intentar cerrar sesión.');
+        }
       }

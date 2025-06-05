@@ -66,11 +66,15 @@ margin-bottom: 20px;
 .back-to-login {
   margin-top: 25px;
    color: #6a5c48;
-  font-size: 0.9em;
+ 
 }
 .back-to-login a {
-  color: #8b5e3c;
-  text-decoration: none;
+  font-size: 1.05em;
+  margin-top: 20px;
+  text-decoration: none; /* Elimina el subrayado */
+  color: #8B4513;       /* Color marrón */
+  text-align: center;   /* Si quieres que este enlace esté centrado, asegúrate de que el contenedor o este mismo tenga esta propiedad */
+  display: block;  
 }
 .back-to-login a:hover {
   text-decoration: underline;
